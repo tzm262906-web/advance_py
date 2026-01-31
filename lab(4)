@@ -1,0 +1,45 @@
+
+print(students["S001"]["courses"]["AI301"]["grade"])
+
+bob_courses = students["S002"]["courses"]
+
+total = 0
+credits = 0
+
+for c in bob_courses.values():
+    total += c["grade"] * c["credits"]
+    credits += c["credits"]
+
+print(total / credits)
+
+for s in students.values():
+    if "CS101" in s["courses"]:
+        print(s["name"])
+
+sum_grades = 0
+count = 0
+
+for s in students.values():
+    for c in s["courses"].values():
+        sum_grades += c["grade"]
+        count += 1
+
+print(sum_grades / count)
+
+best_name = ""
+best_gpa = 0
+
+for s in students.values():
+    total = 0
+    credits = 0
+    for c in s["courses"].values():
+        total += c["grade"] * c["credits"]
+        credits += c["credits"]
+
+    gpa = total / credits
+
+    if gpa > best_gpa:
+        best_gpa = gpa
+        best_name = s["name"]
+
+print(best_name)
