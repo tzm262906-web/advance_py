@@ -1,0 +1,19 @@
+import json
+
+with open("config.json", "r") as f:
+    config = json.load(f)
+
+print("Config:")
+for key, value in config.items():
+    print(key, ":", value)
+
+results = {
+    "accuracy": 0.92,
+    "loss": 0.15,
+    "epochs": 5
+}
+
+with open("results.json", "w") as f:
+    json.dump(results, f, indent=4)
+
+print("Results saved!")
