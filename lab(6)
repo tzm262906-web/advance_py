@@ -1,0 +1,22 @@
+import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({
+    "age": [25, "N/A", 40, 33, "?"],
+    "income": [50000, 60000, None, "unknown", 80000],
+    "churned": [0, 1, 0, 1, 0],
+})
+
+df = df.replace(["N/A", "?", "unknown"], np.nan)
+df = df.astype({"age": "float", "income": "float"})
+
+print(df.isna().mean() * 100)
+
+A = df.dropna()
+
+B = df.fillna(df.mean())
+
+print("Rows A:", len(A))
+print("Rows B:", len(B))
+print("Avg income A:", A["income"].mean())
+print("Avg income B:", B["income"].mean())
