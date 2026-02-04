@@ -1,0 +1,25 @@
+import numpy as np
+import pandas as pd
+
+np.random.seed(10)
+values = np.concatenate([np.random.lognormal(10, 0.5, 1000), [1e7, 2e7]])
+df = pd.DataFrame({"income": values})
+
+q1 = df["income"].quantile(0.25)
+q3 = df["income"].quantile(0.75)
+iqr = q3 - q1
+lower = q1 - 1.5 * iqr
+upper = q3 + 1.5 * iqr
+df["outlier_iqr"] = (df["income"] < lower) | (df["income"] > upper)
+
+mean = df["income"].mean()
+std = df["income"].std()
+df["outlier_z"] = abs(df["income"] - mean)/std > 3
+
+df["income_no"] = df["income"]                  # بدون تعديل
+df["income_capped"] = df["income"].clip(lower, upper)  # capping
+df["income_log"] = np.log1p(df["income"])      # log1p transform
+
+print("عدد outliers بطريقة IQR:", df["outlier_iqr"].sum())
+print("عدد outliers بطريقة Z-score:", df["outlier_z"].sum())
+df.head()
