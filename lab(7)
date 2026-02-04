@@ -1,0 +1,25 @@
+import pandas as pd
+
+def fit_imputer(train_df):
+    return {
+        "age": train_df["age"].median(),
+        "city": train_df["city"].mode()[0]
+    }
+
+def transform_imputer(df, params, add_indicators=True):
+    df = df.copy()
+    
+    if add_indicators:
+        df["age_missing"] = df["age"].isna().astype(int)
+        df["city_missing"] = df["city"].isna().astype(int)
+    
+    df["age"] = df["age"].fillna(params["age"])
+    df["city"] = df["city"].fillna(params["city"])
+    
+    return df
+
+
+params = fit_imputer(train)
+
+print(transform_imputer(train, params))
+print(transform_imputer(test, params))
