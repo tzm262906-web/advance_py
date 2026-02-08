@@ -1,0 +1,31 @@
+import pandas as pd
+import time
+
+def clean_chunk(df):
+    df['age'] = pd.to_numeric(df['age'], errors='coerce').fillna(df['age'].mean())
+    df['income'] = pd.to_numeric(df['income'], errors='coerce').fillna(df['income'].mean())
+    df['city'] = df['city'].fillna('Unknown')
+    return df.drop_duplicates()
+
+
+def process_large_file(input_file, output_file, chunksize=1000):
+    start_time = time.time()
+    chunks_processed = 0
+
+    for chunk in pd.read_csv(input_file, chunksize=chunksize):
+        clean_chunk(chunk).to_csv(
+            output_file,
+            mode='a',
+            index=False,
+            header=(chunks_processed == 0)
+        )
+        chunks_processed += 1
+
+    print(f"Processed {chunks_processed} chunks in {time.time() - start_time:.2f} seconds")
+
+
+process_large_file(
+    "day13_large_users.csv",
+    "cleaned_users.csv",
+    chunksize=1000
+)
