@@ -1,0 +1,26 @@
+import pandas as pd
+
+df = pd.read_csv("data/day12_users.csv")
+
+# تنظيف اسم المدينة
+
+df["city_clean"] = df["city"].str.strip().str.lower()
+
+
+# توحيد المرادفات
+
+df["city_standard"] = df["city_clean"].replace({
+    "ar riyadh": "riyadh",
+    "jedda": "jeddah",
+    "mecca": "makkah"
+})
+
+
+# تحويل الوقت إلى UTC
+
+df["timestamp_utc"] = pd.to_datetime(df["timestamp"], utc=True, errors="coerce")
+
+
+# طباعة النتيجة
+
+print(df[["city", "city_standard", "timestamp_utc"]])
