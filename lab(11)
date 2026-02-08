@@ -1,0 +1,25 @@
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv("data/day11_income.csv")
+s = df["income"]
+
+def winsorize_series(s, lower_q, upper_q):
+    lower = s.quantile(lower_q)
+    upper = s.quantile(upper_q)
+    return s.clip(lower, upper)
+
+def remove_upper_tail(s, upper_q):
+    upper = s.quantile(upper_q)
+    return s[s <= upper]
+
+print("Before:")
+print(s.describe())
+
+wins = winsorize_series(s, 0.05, 0.95)
+print("\nAfter Winsorization:")
+print(wins.describe())
+
+removed = remove_upper_tail(s, 0.95)
+print("\nAfter Removal:")
+print(removed.describe())
