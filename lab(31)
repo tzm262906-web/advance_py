@@ -1,0 +1,22 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+a = pd.read_csv("data/day31_seaborn.csv")
+
+sns.set()
+
+b = a.select_dtypes(include="number").columns[0]
+c = a.select_dtypes(include="object").columns[0]
+
+sns.histplot(a[b])
+plt.show()
+
+sns.kdeplot(a[b])
+plt.show()
+
+sns.boxplot(x=a[c], y=a[b])
+plt.show()
+
+sns.countplot(x=a[c])
+plt.show()
