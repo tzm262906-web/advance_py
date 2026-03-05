@@ -1,0 +1,12 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+a = pd.read_csv("day33_corr.csv")
+
+sns.set()
+
+b = a.corr()
+
+sns.heatmap(b, annot=True)
+plt.show()
