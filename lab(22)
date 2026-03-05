@@ -1,0 +1,11 @@
+import pandas as pd
+
+a = pd.read_csv("day22_interactions.csv")
+
+a["b"] = a["x1"] * a["x2"]
+a["c"] = a["x1"] + a["x2"]
+a["d"] = (a["x1"] > 0) & (a["x2"] > 0)
+
+e = a.corr()
+
+print(e["target"])
