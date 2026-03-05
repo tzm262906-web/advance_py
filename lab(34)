@@ -1,0 +1,16 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+a = pd.read_csv("day34_patterns.csv")
+
+sns.set()
+
+b = a.select_dtypes(include="number").columns
+c = a.select_dtypes(include="object").columns
+
+sns.relplot(data=a, x=b[0], y=b[1], col=c[0])
+plt.show()
+
+sns.regplot(x=a[b[0]], y=a[b[1]])
+plt.show()
