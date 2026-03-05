@@ -1,0 +1,18 @@
+import numpy as np
+
+X = np.array([
+[3.0,4.0],
+[1.0,2.0],
+[0.0,5.0]
+])
+
+a = np.linalg.norm(X, axis=1, keepdims=True)
+
+b = X / a
+
+c = np.linalg.norm(b, axis=1)
+
+print("row norms before:", a)
+print("row norms after:", c)
+print("X normalized:")
+print(b)
