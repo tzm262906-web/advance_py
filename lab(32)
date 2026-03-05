@@ -1,0 +1,16 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+a = pd.read_csv("data/day32_relationships.csv")
+
+sns.set()
+
+b = a.select_dtypes(include="number").columns
+c = a.select_dtypes(include="object").columns
+
+sns.scatterplot(x=a[b[0]], y=a[b[1]], hue=a[c[0]], style=a[c[0]])
+plt.show()
+
+sns.relplot(data=a, x=b[0], y=b[1], hue=c[0], col=c[0])
+plt.show()
