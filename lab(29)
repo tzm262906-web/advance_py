@@ -1,0 +1,18 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+a = pd.read_csv("data/day29_correlations.csv")
+
+b = a.corr()
+
+sns.heatmap(b)
+plt.show()
+
+c = a.select_dtypes(include="number").columns
+
+sns.scatterplot(x=a[c[0]], y=a[c[1]])
+plt.show()
+
+sns.scatterplot(x=a[c[0]], y=a[c[2]])
+plt.show()
