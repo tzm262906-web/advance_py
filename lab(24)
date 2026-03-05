@@ -1,0 +1,28 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.feature_selection import VarianceThreshold
+from sklearn.linear_model import LinearRegression
+
+a = pd.read_csv("day24_selection.csv")
+b, c = a.drop("target", axis=1).select_dtypes(include=np.number), a["target"]
+
+m = LinearRegression().fit(b, c)
+print("Before feature selection:", m.score(b, c))
+
+d = VarianceThreshold(0.0)
+g = pd.DataFrame(d.fit_transform(b), columns=b.columns[d.get_support()])
+
+h = g.corr().abs()
+sns.heatmap(h, annot=True, fmt=".2f", cmap="coolwarm")
+plt.show()
+
+drop = {h.columns[j] for j in range(len(h.columns)) for k in range(j) if h.iloc[j,k] > 0.9}
+l = g.drop(columns=drop)
+
+if l.shape[1]:
+    m = LinearRegression().fit(l, c)
+    print("After feature selection:", m.score(l, c))
+else:
+    print("After feature selection: no features left")
