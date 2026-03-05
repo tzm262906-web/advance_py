@@ -1,0 +1,26 @@
+import numpy as np
+
+a = 10000
+
+b = np.random.randint(1,7,a)
+
+c = np.sum(b == 6)
+d = c / a
+e = 1/6
+
+f = np.sum(b % 2 == 0)
+g = f / a
+h = 3/6
+
+i = np.sum(b > 3)
+j = i / a
+k = 3/6
+
+print("six emp:", d)
+print("six theo:", e)
+
+print("even emp:", g)
+print("even theo:", h)
+
+print("high emp:", j)
+print("high theo:", k)
