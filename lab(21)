@@ -1,0 +1,12 @@
+import pandas as pd
+import numpy as np
+
+a = pd.read_csv("data/day21_housing.csv")
+
+b = a["price"] / a["sqft"]
+a["c"] = np.where(a["sqft"] > 0, b, 0)
+
+a["d"] = a["price"] / a["bedrooms"]
+a["e"] = a["bathrooms"] / a["bedrooms"]
+
+print(a[["price","sqft","c","d","e"]].describe())
