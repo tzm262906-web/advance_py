@@ -1,0 +1,44 @@
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.feature_selection import VarianceThreshold
+from sklearn.linear_model import LinearRegression
+
+a = pd.read_csv("day25_project.csv")
+
+y = a["price"]
+X_basic = a.drop("price", axis=1)
+
+model_basic = LinearRegression()
+model_basic.fit(X_basic, y)
+print("R² Before:", model_basic.score(X_basic, y))
+
+b = X_basic.copy()
+
+b["sqft_rooms"] = b["sqft"] * b["rooms"]
+b["sqft_per_room"] = b["sqft"] / b["rooms"].replace({0: np.nan})
+b = b.fillna(b.median())
+
+poly = PolynomialFeatures(degree=2, include_bias=False)
+p = poly.fit_transform(b)
+cols = poly.get_feature_names_out(b.columns)
+p = pd.DataFrame(p, columns=cols)
+
+vt = VarianceThreshold(threshold=0.01)
+p_sel = vt.fit_transform(p)
+cols_sel = p.columns[vt.get_support()]
+p_sel = pd.DataFrame(p_sel, columns=cols_sel)
+
+corr = p_sel.corr().abs()
+drop = set()
+
+for i in range(len(corr.columns)):
+    for j in range(i):
+        if corr.iloc[i, j] > 0.9:
+            drop.add(corr.columns[i])
+
+final = p_sel.drop(columns=drop)
+
+model_final = LinearRegression()
+model_final.fit(final, y)
+print("R² After:", model_final.score(final, y))
