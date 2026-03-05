@@ -1,0 +1,17 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("day27_boxplots.csv")
+
+plt.figure()
+sns.histplot(df["score"], kde=True)
+plt.title("score")
+plt.show()
+
+plt.figure()
+sns.boxplot(x="group", y="score", data=df)
+plt.title("score by group")
+plt.show()
+
+print(df.groupby("group")["score"].describe())
